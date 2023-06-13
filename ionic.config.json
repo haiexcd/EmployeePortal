@@ -1,0 +1,7 @@
+{
+  "name": "employee-portal",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

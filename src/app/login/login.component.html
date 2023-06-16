@@ -5,22 +5,40 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <form [formGroup]="form">
   <ion-card>
     <ion-card-content>
       <ion-item>
         <ion-label position="floating">Username</ion-label>
-        <ion-input [(ngModel)]="username" type="text"></ion-input>
+        <ion-input aria-label="username" formControlName="username" type="text"></ion-input>
+        <ion-note color="danger" *ngIf="username?.errors?.['required'] && username.dirty">
+          *Username is required
+        </ion-note>
+        <ion-note color="danger" *ngIf="username?.errors?.['minlength'] && username.dirty">
+          *Minimal length is 3 characters
+        </ion-note>
       </ion-item>
+     
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input [(ngModel)]="password" type="password"></ion-input>
+        <ion-input aria-label="password" formControlName="password" type="password"></ion-input>
+        <ion-note color="danger" *ngIf="password?.errors?.['required'] && password.dirty">
+          *Password is required
+        </ion-note>
+        <ion-note color="danger" *ngIf="password?.errors?.['minlength'] && password.dirty">
+          *Minimal length is 3 characters
+        </ion-note>
       </ion-item>
 
-      <ion-button expand="full" (click)="login()">Login</ion-button>
+      <ion-button [disabled]="!form.valid" expand="full" (click)="login()">Login</ion-button>
+      <ion-note color="danger" *ngIf="!form.valid && form.touched">
+        *Please fill out all fields
+      </ion-note>
     </ion-card-content>
   </ion-card>
   <div class="register-link">
     Don't have a login? <a routerLink="/register">Register here</a>
   </div>
+  </form>
 </ion-content>

@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div class="register-container">
+  <h2>Create an Account</h2>
+
+  <form [formGroup]="form">
+    <ion-item>
+      <ion-label position="floating">Full Name</ion-label>
+      <ion-input aria-label="fullName" type="text" formControlName="fullName" name="fullName"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="fullName?.errors?.['required'] && fullName.dirty">
+      *Full name is required
+    </ion-note>
+    <ion-note color="danger" *ngIf="fullName?.errors?.['minlength'] && fullName.dirty">
+      *Minimal length is 3 characters
+    </ion-note>
+    <ion-note color="danger" *ngIf="fullName?.errors?.['maxlength'] && fullName.dirty">
+      *Maximum length is 20 characters
+    </ion-note>
+    <ion-note color="danger" *ngIf="fullName?.errors?.['pattern'] && fullName.dirty">
+      *Full name can only contain letters and spaces
+    </ion-note>
+
+
+    <ion-item>
+      <ion-label position="floating">Username</ion-label>
+      <ion-input aria-label="username" type="text" formControlName="username" name="username"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="username?.errors?.['required'] && username.dirty">
+      *Username is required
+    </ion-note>
+    <ion-note color="danger" *ngIf="username?.errors?.['minlength'] && username.dirty">
+      *Minimal length is 3 characters
+    </ion-note>
+    <ion-note color="danger" *ngIf="username?.errors?.['pattern'] && username.dirty">
+      *Username should only contain letters and numbers
+    </ion-note>
+
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input aria-label="email" type="email" formControlName="email" name="email"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="email?.errors?.['required'] && email.dirty">
+      *Email is required
+    </ion-note>
+    <ion-note color="danger" *ngIf="email?.errors?.['minlength'] && email.dirty">
+      *Minimal length is 3 characters
+    </ion-note>
+    <ion-note color="danger" *ngIf="email?.errors?.['email'] && email.dirty">
+      *Needs to be vaild email
+    </ion-note>
+
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input aria-label="password" type="password" formControlName="password" name="password"></ion-input>
+    </ion-item>
+    <ion-note color="danger" *ngIf="password?.errors?.['required'] && password.dirty">
+      *Password is required
+    </ion-note>
+    <ion-note color="danger" *ngIf="password?.errors?.['minlength'] && password.dirty">
+      *Minimal length is 3 characters
+    </ion-note>
+    <ion-note color="danger" *ngIf="password?.errors?.['pattern'] && password.dirty">
+      *Password needs to contain at least one capital letter, one lowercase letter, one digit, and one special character
+    </ion-note>
+
+    <ion-button [disabled]="!form.valid" expand="full" (click)="register()">Register</ion-button>
+    <ion-note color="danger" *ngIf="!form.valid && form.touched">
+      *Please fill out all fields
+    </ion-note>
+  </form>
+
+  <div class="login-link">
+    Already have an account? <a routerLink="/login">Login here</a>
+  </div>
+</div>

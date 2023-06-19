@@ -37,7 +37,8 @@ export class LoginComponent  implements OnInit {
     console.log(
       'username: ', this.form.controls['username'].value,
       'password: ', this.form.controls['password'].value
-    )
+    );
+      this.router.navigateByUrl('/home')
 
   }
 

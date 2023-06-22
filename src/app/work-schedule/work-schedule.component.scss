@@ -1,0 +1,17 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  #calendar {
+    flex: 1;
+    margin-bottom: 20px;
+    z-index: 0;
+  }
+  
+  .shift-schedule {
+    padding: 20px;
+    z-index: 1;
+  }
+  

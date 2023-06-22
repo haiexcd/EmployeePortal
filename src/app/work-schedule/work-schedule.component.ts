@@ -19,7 +19,13 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // Retrieve shift data from local storage if available
+    const storedEvents = localStorage.getItem('calendarEvents');
+    if (storedEvents) {
+      this.calendarEvents = JSON.parse(storedEvents);
+    }
+  }
 
   ngAfterViewInit() {
     const calendar = new Calendar(this.calendarEl.nativeElement, {
@@ -31,7 +37,7 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
         right: 'dayGridMonth,timeGridWeek,timeGridDay',
       },
       events: this.calendarEvents,
-      eventClick: this.handleEventClick, // Set up the eventClick callback
+      eventClick: this.handleEventClick,
     });
 
     this.calendarApi = calendar;
@@ -39,17 +45,10 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
   }
 
   handleEventClick = (info: any) => {
-    const event = info.event; // Get the clicked event object
-
-    // Show a confirmation dialog or other UI to allow editing/deleting the event
-    // You can choose to open a modal, display a dialog, or any other desired UI
-
-    // Example: Show a browser confirm dialog
-    if (confirm('Do you want to edit or delete this shift?')) {
-      this.editShift(event);
-    } else {
+    const event = info.event;
+    if (confirm('Do you want to delete this shift?')) {
       this.deleteShift(event);
-    }
+    } 
   };
 
   createShift() {
@@ -62,50 +61,58 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
       end: this.shiftEndDate,
     };
 
-    // Add the new shift to the events array
     this.calendarEvents.push(newShift);
     this.calendarApi.addEvent(newShift);
 
-    // Clear the form fields
+    // Save shift data to local storage
+    localStorage.setItem('calendarEvents', JSON.stringify(this.calendarEvents));
+
+    this.clearFormFields();
+  }
+
+  editShift(event: any) {
+    const index = this.calendarEvents.findIndex((e) => e === event);
+
+    if (index > -1) {
+      const calendarEvent = this.calendarApi.getEventById(event.id);
+
+      if (calendarEvent) {
+        this.calendarEvents[index].title = event.title;
+        this.calendarEvents[index].extendedProps.name = event.extendedProps.name;
+
+        calendarEvent.setProp('title', event.title);
+        calendarEvent.setExtendedProp('name', event.extendedProps.name);
+
+        // Save shift data to local storage
+        localStorage.setItem('calendarEvents', JSON.stringify(this.calendarEvents));
+      }
+    }
+  }
+
+  deleteShift(event: any) {
+    const index = this.calendarEvents.findIndex((e) => e === event);
+
+    if (index > -1) {
+      this.calendarEvents.splice(index, 1);
+
+      const calendarEvent = this.calendarApi.getEventById(event.id);
+      if (calendarEvent) {
+        calendarEvent.remove();
+      }
+
+      // Save shift data to local storage
+      localStorage.setItem('calendarEvents', JSON.stringify(this.calendarEvents));
+    }
+    localStorage.removeItem('calendarEvents');
+    this.calendarEvents = [];
+    this.calendarApi.removeAllEvents();
+  }
+
+  clearFormFields() {
     this.shiftTitle = '';
     this.shiftName = '';
     this.shiftStartDate = '';
     this.shiftEndDate = '';
   }
 
-  editShift(event: any) {
-    // Find the index of the event in the events array
-    const index = this.calendarEvents.findIndex((e) => e === event);
-
-    if (index > -1) {
-      const calendarEvent = this.calendarApi.getEventById(event.id);
-
-      if (calendarEvent) {
-        // Update the event's title and name
-        this.calendarEvents[index].title = event.title;
-        this.calendarEvents[index].extendedProps.name = event.extendedProps.name;
-
-        // Update the event on the calendar
-        calendarEvent.setProp('title', event.title);
-        calendarEvent.setExtendedProp('name', event.extendedProps.name);
-      }
-    }
-  }
-
-  deleteShift(event: any) {
-    // Find the index of the event in the events array
-    const index = this.calendarEvents.findIndex((e) => e === event);
-  
-    if (index > -1) {
-      // Remove the event from the events array
-      this.calendarEvents.splice(index, 1);
-  
-      // Remove the event from the calendar
-      const calendarEvent = this.calendarApi.getEventById(event.id);
-      if (calendarEvent) {
-        calendarEvent.remove();
-      }
-    }
-  }
-  
 }

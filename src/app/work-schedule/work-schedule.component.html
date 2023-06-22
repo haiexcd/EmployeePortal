@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Work Schedule
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div #calendar id="calendar"></div>
+  <ion-card class="shift-schedule">
+    <ion-card-header>
+      Schedule Shift
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Shift Title</ion-label>
+        <ion-input [(ngModel)]="shiftTitle"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Shift Name</ion-label>
+        <ion-input [(ngModel)]="shiftName"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Shift Start Date</ion-label>
+        <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="shiftStartDate"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Shift End Date</ion-label>
+        <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="shiftEndDate"></ion-datetime>
+      </ion-item>
+      <ion-button expand="full" (click)="createShift()">Create Shift</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-item *ngFor="let event of calendarEvents">
+      <ion-label>{{ event.title }}</ion-label>
+      <ion-label>{{ event.extendedProps.name }}</ion-label>
+      <ion-label>{{ event.start | date: 'yyyy-MM-dd' }}</ion-label>
+      <ion-label>{{ event.end | date: 'yyyy-MM-dd' }}</ion-label>
+      <ion-button (click)="editShift(event)">Edit</ion-button>
+      <ion-button (click)="deleteShift(event)">Delete</ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angula
 import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { v4 as uuidv4 } from 'uuid';
+
 
 @Component({
   selector: 'app-work-schedule',
@@ -17,7 +19,7 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
   calendarApi: any;
   calendarEvents: any[] = [];
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     // Retrieve shift data from local storage if available
@@ -48,12 +50,13 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
   attachDayClickEventListeners = (arg: any) => {
     const cellEl = arg.el;
     const selectedDate = cellEl.getAttribute('data-date');
-  
+
     cellEl.addEventListener('click', () => {
       // Prompt the user to add a shift
       const shiftTitle = prompt(`Enter shift title for ${selectedDate}:`);
       if (shiftTitle) {
         const newShift = {
+          id: uuidv4(),
           title: shiftTitle,
           extendedProps: {
             name: '', // You can add additional properties here
@@ -61,26 +64,27 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
           start: selectedDate,
           end: selectedDate,
         };
-  
+
         this.calendarEvents.push(newShift);
         this.calendarApi.addEvent(newShift);
-  
+
         // Save shift data to local storage
         localStorage.setItem('calendarEvents', JSON.stringify(this.calendarEvents));
       }
     });
   };
-  
+
 
   handleEventClick = (info: any) => {
     const event = info.event;
     if (confirm('Do you want to delete this shift?')) {
       this.deleteShift(event);
-    } 
+    }
   };
 
   createShift() {
     const newShift = {
+      id: uuidv4(),
       title: this.shiftTitle,
       extendedProps: {
         name: this.shiftName,
@@ -118,22 +122,22 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
   }
 
   deleteShift(event: any) {
-    const index = this.calendarEvents.findIndex((e) => e === event);
+    const index = this.calendarEvents.findIndex((e) => e.id === event.id);
 
+  
     if (index > -1) {
       this.calendarEvents.splice(index, 1);
-
+  
       const calendarEvent = this.calendarApi.getEventById(event.id);
       if (calendarEvent) {
         calendarEvent.remove();
       }
-
+  
       // Save shift data to local storage
       localStorage.setItem('calendarEvents', JSON.stringify(this.calendarEvents));
+  
+
     }
-    localStorage.removeItem('calendarEvents');
-    this.calendarEvents = [];
-    this.calendarApi.removeAllEvents();
   }
 
   clearFormFields() {

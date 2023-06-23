@@ -38,11 +38,39 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
       },
       events: this.calendarEvents,
       eventClick: this.handleEventClick,
+      dayCellDidMount: this.attachDayClickEventListeners,
     });
 
     this.calendarApi = calendar;
     calendar.render();
   }
+
+  attachDayClickEventListeners = (arg: any) => {
+    const cellEl = arg.el;
+    const selectedDate = cellEl.getAttribute('data-date');
+  
+    cellEl.addEventListener('click', () => {
+      // Prompt the user to add a shift
+      const shiftTitle = prompt(`Enter shift title for ${selectedDate}:`);
+      if (shiftTitle) {
+        const newShift = {
+          title: shiftTitle,
+          extendedProps: {
+            name: '', // You can add additional properties here
+          },
+          start: selectedDate,
+          end: selectedDate,
+        };
+  
+        this.calendarEvents.push(newShift);
+        this.calendarApi.addEvent(newShift);
+  
+        // Save shift data to local storage
+        localStorage.setItem('calendarEvents', JSON.stringify(this.calendarEvents));
+      }
+    });
+  };
+  
 
   handleEventClick = (info: any) => {
     const event = info.event;

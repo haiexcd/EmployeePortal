@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angula
 import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { AlertController } from '@ionic/angular';
+import { v4 as uuidv4 } from 'uuid';
+
 
 @Component({
   selector: 'app-work-schedule',
@@ -16,10 +19,18 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
   shiftEndDate!: string;
   calendarApi: any;
   calendarEvents: any[] = [];
+  showShiftSection: boolean = false;
+  showListSection: boolean = false;
 
-  constructor() {}
+  constructor(private alertController: AlertController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // Retrieve shift data from local storage if available
+    const storedEvents = localStorage.getItem('calendarEvents');
+    if (storedEvents) {
+      this.calendarEvents = JSON.parse(storedEvents);
+    }
+  }
 
   ngAfterViewInit() {
     const calendar = new Calendar(this.calendarEl.nativeElement, {
@@ -31,29 +42,106 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
         right: 'dayGridMonth,timeGridWeek,timeGridDay',
       },
       events: this.calendarEvents,
-      eventClick: this.handleEventClick, // Set up the eventClick callback
+      eventClick: this.handleEventClick,
+      dayCellDidMount: this.attachDayClickEventListeners,
     });
 
     this.calendarApi = calendar;
     calendar.render();
   }
 
-  handleEventClick = (info: any) => {
-    const event = info.event; // Get the clicked event object
-
-    // Show a confirmation dialog or other UI to allow editing/deleting the event
-    // You can choose to open a modal, display a dialog, or any other desired UI
-
-    // Example: Show a browser confirm dialog
-    if (confirm('Do you want to edit or delete this shift?')) {
-      this.editShift(event);
-    } else {
-      this.deleteShift(event);
-    }
+  attachDayClickEventListeners = (arg: any) => {
+    const cellEl = arg.el;
+    const selectedDate = cellEl.getAttribute('data-date');
+  
+    cellEl.addEventListener('click', async () => {
+      const alert = await this.alertController.create({
+        header: `Enter shift details for ${selectedDate}:`,
+        inputs: [
+          {
+            name: 'shiftTitle',
+            type: 'text',
+            placeholder: 'Shift Title'
+          },
+          {
+            name: 'shiftTime',
+            type: 'text',
+            placeholder: 'Shift Time (AM/PM)'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              // User clicked "Cancel" or closed the pop-up
+            }
+          },
+          {
+            text: 'Add',
+            handler: (data) => {
+              const shiftTitle = data.shiftTitle;
+              const shiftTime = data.shiftTime.toUpperCase(); // Convert to uppercase for consistency
+              if (shiftTitle && (shiftTime === 'AM' || shiftTime === 'PM')) {
+                const newShift = {
+                  id: uuidv4(),
+                  title: `${shiftTitle} (${shiftTime})`,
+                  extendedProps: {
+                    name: '', // You can add additional properties here
+                  },
+                  start: selectedDate,
+                  end: selectedDate,
+                };
+  
+                this.calendarEvents.push(newShift);
+                this.calendarApi.addEvent(newShift);
+  
+                // Save shift data to local storage
+                localStorage.setItem('calendarEvents', JSON.stringify(this.calendarEvents));
+              }
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    });
   };
+  
+  
+  
+
+
+  handleEventClick = async (info: any) => {
+    const event = info.event;
+  
+    const alert = await this.alertController.create({
+      header: 'Confirm Deletion',
+      message: 'Do you want to delete this shift?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            // User clicked "No" or closed the pop-up
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.deleteShift(event);
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  };
+  
 
   createShift() {
     const newShift = {
+      id: uuidv4(),
       title: this.shiftTitle,
       extendedProps: {
         name: this.shiftName,
@@ -62,50 +150,68 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
       end: this.shiftEndDate,
     };
 
-    // Add the new shift to the events array
     this.calendarEvents.push(newShift);
     this.calendarApi.addEvent(newShift);
 
-    // Clear the form fields
+    // Save shift data to local storage
+    localStorage.setItem('calendarEvents', JSON.stringify(this.calendarEvents));
+
+    this.clearFormFields();
+  }
+
+  editShift(event: any) {
+    const index = this.calendarEvents.findIndex((e) => e === event);
+    console.log(index)
+
+    if (index > -1) {
+      const calendarEvent = this.calendarApi.getEventById(event.id);
+      console.log(calendarEvent)
+
+      if (calendarEvent) {
+        this.calendarEvents[index].title = event.title;
+        this.calendarEvents[index].extendedProps.name = event.extendedProps.name;
+
+        calendarEvent.setProp('title', event.title);
+        calendarEvent.setExtendedProp('name', event.extendedProps.name);
+
+        // Save shift data to local storage
+        localStorage.setItem('calendarEvents', JSON.stringify(this.calendarEvents));
+      }
+    }
+  }
+
+  deleteShift(event: any) {
+    const index = this.calendarEvents.findIndex((e) => e.id === event.id);
+
+  
+    if (index > -1) {
+      this.calendarEvents.splice(index, 1);
+  
+      const calendarEvent = this.calendarApi.getEventById(event.id);
+      if (calendarEvent) {
+        calendarEvent.remove();
+      }
+  
+      // Save shift data to local storage
+      localStorage.setItem('calendarEvents', JSON.stringify(this.calendarEvents));
+  
+
+    }
+  }
+
+  clearFormFields() {
     this.shiftTitle = '';
     this.shiftName = '';
     this.shiftStartDate = '';
     this.shiftEndDate = '';
   }
 
-  editShift(event: any) {
-    // Find the index of the event in the events array
-    const index = this.calendarEvents.findIndex((e) => e === event);
-
-    if (index > -1) {
-      const calendarEvent = this.calendarApi.getEventById(event.id);
-
-      if (calendarEvent) {
-        // Update the event's title and name
-        this.calendarEvents[index].title = event.title;
-        this.calendarEvents[index].extendedProps.name = event.extendedProps.name;
-
-        // Update the event on the calendar
-        calendarEvent.setProp('title', event.title);
-        calendarEvent.setExtendedProp('name', event.extendedProps.name);
-      }
-    }
+  toggleShiftSection() {
+    this.showShiftSection = !this.showShiftSection;
   }
 
-  deleteShift(event: any) {
-    // Find the index of the event in the events array
-    const index = this.calendarEvents.findIndex((e) => e === event);
-  
-    if (index > -1) {
-      // Remove the event from the events array
-      this.calendarEvents.splice(index, 1);
-  
-      // Remove the event from the calendar
-      const calendarEvent = this.calendarApi.getEventById(event.id);
-      if (calendarEvent) {
-        calendarEvent.remove();
-      }
-    }
+  toggleListSection() {
+    this.showListSection = !this.showListSection;
   }
-  
+
 }

@@ -19,6 +19,8 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
   shiftEndDate!: string;
   calendarApi: any;
   calendarEvents: any[] = [];
+  showShiftSection: boolean = false;
+  showListSection: boolean = false;
 
   constructor(private alertController: AlertController) { }
 
@@ -202,6 +204,14 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
     this.shiftName = '';
     this.shiftStartDate = '';
     this.shiftEndDate = '';
+  }
+
+  toggleShiftSection() {
+    this.showShiftSection = !this.showShiftSection;
+  }
+
+  toggleListSection() {
+    this.showListSection = !this.showListSection;
   }
 
 }

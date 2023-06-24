@@ -54,12 +54,17 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
   
     cellEl.addEventListener('click', async () => {
       const alert = await this.alertController.create({
-        header: `Enter shift title for ${selectedDate}:`,
+        header: `Enter shift details for ${selectedDate}:`,
         inputs: [
           {
             name: 'shiftTitle',
             type: 'text',
             placeholder: 'Shift Title'
+          },
+          {
+            name: 'shiftTime',
+            type: 'text',
+            placeholder: 'Shift Time (AM/PM)'
           }
         ],
         buttons: [
@@ -74,10 +79,11 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
             text: 'Add',
             handler: (data) => {
               const shiftTitle = data.shiftTitle;
-              if (shiftTitle) {
+              const shiftTime = data.shiftTime.toUpperCase(); // Convert to uppercase for consistency
+              if (shiftTitle && (shiftTime === 'AM' || shiftTime === 'PM')) {
                 const newShift = {
                   id: uuidv4(),
-                  title: shiftTitle,
+                  title: `${shiftTitle} (${shiftTime})`,
                   extendedProps: {
                     name: '', // You can add additional properties here
                   },
@@ -99,6 +105,8 @@ export class WorkScheduleComponent implements OnInit, AfterViewInit {
       await alert.present();
     });
   };
+  
+  
   
 
 

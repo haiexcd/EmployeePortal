@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Leave Request</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input [(ngModel)]="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Reason</ion-label>
+      <ion-textarea [(ngModel)]="reason"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Start Date</ion-label>
+      <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="startDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">End Date</ion-label>
+      <ion-datetime display-format="MMM DD, YYYY" [(ngModel)]="endDate"></ion-datetime>
+    </ion-item>
+    <ion-button expand="full" (click)="submitLeaveRequest()">Submit</ion-button>
+  </ion-list>
+
+
+
+  <ion-item-group>
+    <ion-item button (click)="toggleLeaveRequests()">
+      <ion-label>
+        <ion-icon name="caret-forward" *ngIf="!showLeaveRequests"></ion-icon>
+        <ion-icon name="caret-down" *ngIf="showLeaveRequests"></ion-icon>
+        Leave Requests
+      </ion-label>
+    </ion-item>
+  <ion-list *ngIf="showLeaveRequests">
+    <ion-item-group *ngFor="let leaveRequest of leaveRequests">
+      <ion-item>
+        <ion-label>
+          <h2>{{ leaveRequest.name }}'s {{ leaveRequest.reason }}</h2>
+          <p>{{ leaveRequest.startDate | date }} - {{ leaveRequest.endDate | date }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+  </ion-item-group>
+
+
+
+
+
+</ion-content>

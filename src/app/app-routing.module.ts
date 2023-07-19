@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'work-schedule',
     loadChildren: () => import('./work-schedule/work-schedule.module').then(m => m.WorkScheduleModule)
   },
+  {
+    path: 'time-off',
+    loadChildren: () => import('./time-off/time-off.module').then(m => m.TimeOffModule)
+  }
 ];
 
 @NgModule({

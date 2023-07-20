@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Liquor } from '../shared/models/liquor.model';
+import { LiquorService } from '../shared/services/liquor.service';
 
 @Component({
   selector: 'app-shop',
@@ -6,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./shop.component.scss'],
 })
 export class ShopComponent  implements OnInit {
+  liquors: Liquor[] = [];
 
-  constructor() { }
+  constructor(private liquorService: LiquorService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getLiquors();
+  }
+
+  getLiquors() {
+    this.liquors = this.liquorService.getLiquors();
+  }
 
 }

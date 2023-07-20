@@ -1,3 +1,22 @@
-<p>
-  shop works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Shop
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let liquor of liquors">
+      <ion-thumbnail slot="start">
+        <img [src]="liquor.imageUrl" [alt]="liquor.name" />
+      </ion-thumbnail>
+      <ion-label>
+        <h3>{{ liquor.name }}</h3>
+        <p>{{ liquor.description }}</p>
+        <p>Price: ${{ liquor.price }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

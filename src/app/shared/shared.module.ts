@@ -6,13 +6,14 @@ import { RouterModule } from '@angular/router';
 
 
 
+
 @NgModule({
   declarations: [DropdownMenuComponent],
   exports: [DropdownMenuComponent],
   imports: [
     CommonModule,
     IonicModule,
-    RouterModule
+    RouterModule,
   ]
 })
 export class SharedModule { }

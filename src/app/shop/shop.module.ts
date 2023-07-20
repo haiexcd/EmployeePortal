@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { ShopRoutingModule } from './shop-routing.module';
 import { ShopComponent } from './shop.component';
+import { IonicModule } from '@ionic/angular';
+
 
 
 @NgModule({
@@ -10,7 +12,8 @@ import { ShopComponent } from './shop.component';
   exports: [ShopComponent],
   imports: [
     CommonModule,
-    ShopRoutingModule
+    ShopRoutingModule,
+    IonicModule,
   ]
 })
 export class ShopModule { }

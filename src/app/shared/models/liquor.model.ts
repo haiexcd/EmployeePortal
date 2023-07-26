@@ -4,4 +4,5 @@ export interface Liquor {
     description: string;
     price: number;
     imageUrl: string;
+    quantity: number;
   }

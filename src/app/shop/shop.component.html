@@ -16,6 +16,7 @@
         <h3>{{ liquor.name }}</h3>
         <p>{{ liquor.description }}</p>
         <p>Price: ${{ liquor.price }}</p>
+        <button ion-button (click)="addToCart(liquor)">Buy</button>
       </ion-label>
     </ion-item>
   </ion-list>

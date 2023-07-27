@@ -5,6 +5,7 @@ import { ShopRoutingModule } from './shop-routing.module';
 import { ShopComponent } from './shop.component';
 import { IonicModule } from '@ionic/angular';
 import { CartPanelComponent } from './cart-panel/cart-panel.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -16,6 +17,7 @@ import { CartPanelComponent } from './cart-panel/cart-panel.component';
     CommonModule,
     ShopRoutingModule,
     IonicModule,
+    FormsModule
   ]
 })
 export class ShopModule { }

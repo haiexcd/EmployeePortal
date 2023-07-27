@@ -51,10 +51,7 @@ export class ShopComponent  implements OnInit {
     modal.present();
   }
 
-  closeCart() {
-    // Close the cart panel
-    this.modalController.dismiss(undefined, 'cartPanelClosed');
-  }
+
 
   getTotalItems() {
     return this.cart.reduce((total, item) => total + item.quantity, 0);

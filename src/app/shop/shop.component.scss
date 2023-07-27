@@ -28,4 +28,29 @@
   .cart-panel-modal.show-cart {
     transform: translateX(0);
   }
+
+/* ... Existing styles ... */
+
+.buy-button {
+    background-color: #3880ff; /* Set the button background color */
+    color: #ffffff; /* Set the text color */
+    font-weight: bold; /* Make the text bold */
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Apply border radius for rounded corners */
+    padding: 8px 16px; /* Add padding to create space around the button text */
+    margin-top: 8px; /* Add some top margin to separate the buttons */
+    cursor: pointer; /* Show pointer cursor on hover */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+    transition: background-color 0.2s ease, transform 0.2s ease; /* Add transition effects */
+  }
+  
+  .buy-button:hover {
+    background-color: #007aff; /* Change background color on hover */
+    transform: scale(1.05); /* Slightly scale the button on hover */
+  }
+  
+  .buy-button:active {
+    transform: scale(0.95); /* Slightly scale the button on click */
+  }
+  
   

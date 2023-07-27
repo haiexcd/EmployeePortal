@@ -21,10 +21,30 @@
         <h3>{{ item.name }}</h3>
         <p>Price: ${{ item.price }}</p>
         <p>Quantity: {{ item.quantity }}</p>
+        <ion-button (click)="removeItem(item)">Remove</ion-button> 
       </ion-label>
     </ion-item>
   </ion-list>
-  <div class="total">
-    Total: ${{ calculateTotal() }}
+  <div class="subtotal">
+    <p>Subtotal: ${{ calculateSubtotal() }}</p>
+    <p>Delivery Fee: $7</p>
+    <p>Sales Tax (6.7%): ${{ calculateSalesTax() }}</p>
+    <p>Grand Total: ${{ calculateGrandTotal() }}</p>
   </div>
+  <div class="payment-options">
+    <ion-radio-group [(ngModel)]="selectedPaymentOption">
+      <ion-list-header>
+        Payment Options
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Cash</ion-label>
+        <ion-radio slot="start" value="cash"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Credit</ion-label>
+        <ion-radio slot="start" value="credit"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </div>
+  <ion-button expand="full" (click)="placeOrder()">Order</ion-button>
 </ion-content>

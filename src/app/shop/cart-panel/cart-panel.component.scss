@@ -1,0 +1,29 @@
+/* ... Existing styles ... */
+
+.subtotal {
+    margin: 16px;
+    border-top: 1px solid #ccc;
+    padding-top: 16px;
+  
+    ion-button {
+      margin-top: 16px;
+    }
+  }
+  
+  .subtotal p {
+    margin: 8px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .payment-options {
+    margin: 16px;
+    border-top: 1px solid #ccc;
+    padding-top: 16px;
+  }
+  
+  .payment-options ion-list-header {
+    font-weight: bold;
+  }
+  
+  

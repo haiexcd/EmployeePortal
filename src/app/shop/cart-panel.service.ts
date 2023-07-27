@@ -30,4 +30,8 @@ export class CartPanelService {
   clearCart() {
     this.cart.next([]);
   }
+
+  updateCart(updatedCart: Liquor[]) {
+    this.cart.next(updatedCart);
+  }
 }

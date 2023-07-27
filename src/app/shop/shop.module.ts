@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 
 
+
 @NgModule({
   declarations: [ShopComponent],
   exports: [ShopComponent],

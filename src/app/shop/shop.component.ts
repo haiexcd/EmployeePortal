@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { Liquor } from '../shared/models/liquor.model';
 import { LiquorService } from '../shared/services/liquor.service';
 
@@ -11,7 +12,10 @@ export class ShopComponent  implements OnInit {
   liquors: Liquor[] = [];
   cart: Liquor[] = [];
 
-  constructor(private liquorService: LiquorService) { }
+  constructor(
+    private liquorService: LiquorService,
+    private modalController: ModalController
+    ) { }
 
   ngOnInit() {
     this.getLiquors();
@@ -29,6 +33,30 @@ export class ShopComponent  implements OnInit {
     } else {
       this.cart.push({ ...liquor, quantity: 1 });
     }
+  }
+
+
+  openCart() {
+    this.presentCartModal();
+  }
+
+  async presentCartModal() {
+    const modal = await this.modalController.create({
+      component: 'cartModal', // ID of the cart modal in the template
+    });
+    return await modal.present();
+  }
+
+  closeCart() {
+    this.modalController.dismiss();
+  }
+
+  getTotalItems() {
+    return this.cart.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  calculateTotal() {
+    return this.cart.reduce((total, item) => total + item.price * item.quantity, 0);
   }
 
 }

@@ -13,8 +13,11 @@
 </ion-header>
 
 <ion-content>
+  <ion-searchbar [(ngModel)]="searchQuery" (keyup)="filterLiquors()">
+  </ion-searchbar>
+
   <ion-list>
-    <ion-item *ngFor="let liquor of liquors">
+    <ion-item *ngFor="let liquor of filteredLiquors">
       <ion-thumbnail slot="start">
         <img [src]="liquor.imageUrl" [alt]="liquor.name" />
       </ion-thumbnail>

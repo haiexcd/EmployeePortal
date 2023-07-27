@@ -34,10 +34,20 @@ export class CartPanelComponent  implements OnInit {
     return Math.ceil(salesTax * 100) / 100; // Round to the nearest cent
   }
 
+  calculateCreditCardCharge() {
+    // Calculate the credit card charge amount
+    const subtotal = this.calculateSubtotal();
+    const creditCardChargeRate = 3.99 / 100;
+    const creditCardCharge = subtotal * creditCardChargeRate;
+    return Math.ceil(creditCardCharge * 100) / 100; // Round up to the nearest cent
+  }
+
   calculateGrandTotal() {
     const subtotal = this.calculateSubtotal();
     const salesTax = this.calculateSalesTax();
-    return subtotal + 7 + salesTax;
+    const creditCardCharge = this.selectedPaymentOption === 'credit' ? this.calculateCreditCardCharge() : 0;
+    const grandTotal = subtotal + 7 + salesTax + creditCardCharge;
+    return Math.ceil(grandTotal * 100) / 100; // Round up to the nearest cent
   }
 
   closeCart() {

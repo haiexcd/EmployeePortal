@@ -13,6 +13,8 @@ import { CartPanelComponent } from './cart-panel/cart-panel.component';
 export class ShopComponent  implements OnInit {
   liquors: Liquor[] = [];
   cart: Liquor[] = [];
+  searchQuery: string = '';
+  filteredLiquors: Liquor[] = [];
 
 
 
@@ -31,6 +33,7 @@ export class ShopComponent  implements OnInit {
 
   getLiquors() {
     this.liquors = this.liquorService.getLiquors();
+    this.filteredLiquors = this.liquors;
   }
 
  
@@ -59,6 +62,12 @@ export class ShopComponent  implements OnInit {
 
   calculateTotal() {
     return this.cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  }
+
+  filterLiquors() {
+    this.filteredLiquors = this.liquors.filter((liquor) =>
+      liquor.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
   }
 
 }

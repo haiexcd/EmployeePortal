@@ -29,6 +29,7 @@
     <p>Subtotal: ${{ calculateSubtotal() }}</p>
     <p>Delivery Fee: $7</p>
     <p>Sales Tax (6.7%): ${{ calculateSalesTax() }}</p>
+    <p *ngIf="selectedPaymentOption === 'credit'">Credit Card Charge (3.99%): ${{ calculateCreditCardCharge() }}</p>
     <p>Grand Total: ${{ calculateGrandTotal() }}</p>
   </div>
   <div class="payment-options">

@@ -28,41 +28,5 @@
   </ion-list>
 </ion-content>
 
-<!-- Cart Modal -->
 
-  <ion-modal
-    id="cartModal"
-    [animated]="true"
-  >
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>
-          Cart
-        </ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="closeCart()">
-            <ion-icon name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <ion-list>
-        <!-- Loop through the cart items -->
-        <ion-item *ngFor="let item of cart">
-          <ion-thumbnail slot="start">
-            <img [src]="item.imageUrl" [alt]="item.name" />
-          </ion-thumbnail>
-          <ion-label>
-            <h3>{{ item.name }}</h3>
-            <p>Price: ${{ item.price }}</p>
-            <p>Quantity: {{ item.quantity }}</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-      <div class="total">
-        Total: ${{ calculateTotal() }}
-      </div>
-    </ion-content>
-  </ion-modal>
 

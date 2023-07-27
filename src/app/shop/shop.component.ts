@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Liquor } from '../shared/models/liquor.model';
 import { LiquorService } from '../shared/services/liquor.service';
+import { CartPanelService } from './cart-panel.service';
+import { CartPanelComponent } from './cart-panel/cart-panel.component';
 
 @Component({
   selector: 'app-shop',
@@ -12,43 +14,46 @@ export class ShopComponent  implements OnInit {
   liquors: Liquor[] = [];
   cart: Liquor[] = [];
 
+
+
   constructor(
     private liquorService: LiquorService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private cartPanelService: CartPanelService
     ) { }
 
   ngOnInit() {
     this.getLiquors();
+    this.cartPanelService.getCart().subscribe((cart) => {
+      this.cart = cart;
+    });
   }
 
   getLiquors() {
     this.liquors = this.liquorService.getLiquors();
   }
 
+ 
   addToCart(liquor: Liquor) {
-    const existingItem = this.cart.find((item) => item.id = liquor.id);
-
-    if (existingItem) {
-      existingItem.quantity++;
-    } else {
-      this.cart.push({ ...liquor, quantity: 1 });
-    }
+    this.cartPanelService.addToCart(liquor);
   }
-
 
   openCart() {
-    this.presentCartModal();
+    this.presentCartPanel();
   }
 
-  async presentCartModal() {
+  async presentCartPanel() {
     const modal = await this.modalController.create({
-      component: 'cartModal', // ID of the cart modal in the template
+      component: CartPanelComponent,
+      cssClass: 'cart-panel-modal',
     });
-    return await modal.present();
+
+    modal.present();
   }
 
   closeCart() {
-    this.modalController.dismiss();
+    // Close the cart panel
+    this.modalController.dismiss(undefined, 'cartPanelClosed');
   }
 
   getTotalItems() {

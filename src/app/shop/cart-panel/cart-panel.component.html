@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Cart
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeCart()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <!-- Loop through the cart items -->
+    <ion-item *ngFor="let item of cart">
+      <ion-thumbnail slot="start">
+        <img [src]="item.imageUrl" [alt]="item.name" />
+      </ion-thumbnail>
+      <ion-label>
+        <h3>{{ item.name }}</h3>
+        <p>Price: ${{ item.price }}</p>
+        <p>Quantity: {{ item.quantity }}</p>
+        <ion-button (click)="removeItem(item)">Remove</ion-button> 
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <div class="subtotal">
+    <p>Subtotal: ${{ calculateSubtotal() }}</p>
+    <p>Delivery Fee: $7</p>
+    <p>Sales Tax (6.7%): ${{ calculateSalesTax() }}</p>
+    <p *ngIf="selectedPaymentOption === 'credit'">Credit Card Charge (3.99%): ${{ calculateCreditCardCharge() }}</p>
+    <p>Grand Total: ${{ calculateGrandTotal() }}</p>
+  </div>
+  <div class="payment-options">
+    <ion-radio-group [(ngModel)]="selectedPaymentOption">
+      <ion-list-header>
+        Payment Options
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Cash</ion-label>
+        <ion-radio slot="start" value="cash"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Credit</ion-label>
+        <ion-radio slot="start" value="credit"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </div>
+  <ion-button expand="full" (click)="placeOrder()">Order</ion-button>
+</ion-content>

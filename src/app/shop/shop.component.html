@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Shop
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openCart()">
+        <ion-icon slot="icon-only" name="cart"></ion-icon>
+        <span *ngIf="cart.length > 0" class="cart-badge">{{ getTotalItems() }}</span>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar [(ngModel)]="searchQuery" (keyup)="filterLiquors()">
+  </ion-searchbar>
+
+  <ion-list>
+    <ion-item *ngFor="let liquor of filteredLiquors">
+      <ion-thumbnail slot="start">
+        <img [src]="liquor.imageUrl" [alt]="liquor.name" />
+      </ion-thumbnail>
+      <ion-label>
+        <h3>{{ liquor.name }}</h3>
+        <p>{{ liquor.description }}</p>
+        <p>Price: ${{ liquor.price }}</p>
+        <button class="buy-button" ion-button (click)="addToCart(liquor)">Buy</button>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+
+

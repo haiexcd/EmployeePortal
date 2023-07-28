@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { fakeLiquorData } from '../models/liquor-data';
 import { Liquor } from '../models/liquor.model';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,10 @@ export class LiquorService {
 
   getLiquors(): Liquor[] {
     return this.liquorData;
+  }
+
+  getLiquorsObservable(): Observable<Liquor[]> {
+    return this.liquorDataSubject.asObservable();
   }
 
   addLiquor(newLiquor: Liquor) {

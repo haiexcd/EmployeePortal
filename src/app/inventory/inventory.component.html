@@ -26,10 +26,16 @@
         <ion-input aria-label="quantity" type="number" [(ngModel)]="newLiquor.quantity" placeholder="Quantity"></ion-input>
       </ion-item>
     </ion-card-content>
-    <ion-buttons class="add-item-buttons">
+    <ion-buttons class="add-item-buttons" *ngIf="isCameraAvailable">
       <ion-button (click)="takePicture()" class="add-item-button">Take Picture</ion-button>
       <ion-button (click)="addNewLiquor()" class="add-item-button">Add Item</ion-button>
     </ion-buttons>
+    
+    <ion-buttons class="add-item-buttons" *ngIf="!isCameraAvailable">
+      <ion-button (click)="takePicture()" class="add-item-button">Access Webcam</ion-button>
+      <ion-button (click)="addNewLiquor()" class="add-item-button">Add Item</ion-button>
+    </ion-buttons>
+    
   </ion-card>
 
   <!-- Display the current inventory using *ngFor -->

@@ -1,0 +1,50 @@
+/* inventory.component.scss */
+.add-item-card {
+    margin: 10px;
+    padding: 10px;
+  }
+  
+  .add-item-card ion-img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .add-item-card ion-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .add-item-button {
+    width: 48%;
+  }
+  
+  .liquor-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .liquor-item-card {
+    flex-basis: calc(50% - 20px);
+    margin: 10px;
+  }
+  
+  .liquor-item-card ion-img {
+    max-width: 100%;
+    height: 200px;
+  }
+  
+  .liquor-details-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+  }
+  
+  .price {
+    font-weight: bold;
+  }
+  
+  .quantity {
+    font-style: italic;
+  }
+  

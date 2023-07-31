@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Inventory</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Form to capture new liquor/beer details -->
+  <ion-card class="add-item-card">
+    <ion-img [src]="newLiquor.imageUrl" *ngIf="newLiquor.imageUrl"></ion-img>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Name</ion-label>
+        <ion-input aria-label="name" [(ngModel)]="newLiquor.name" placeholder="Name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Description</ion-label>
+        <ion-input aria-label="description" [(ngModel)]="newLiquor.description" placeholder="Description"></ion-input>
+      </ion-item>
+      <!-- <ion-item *ngIf="!isCameraAvailable">
+        <ion-label>Image URL</ion-label>
+        <ion-input [(ngModel)]="newLiquor.imageUrl" placeholder="Enter Image URL"></ion-input>
+      </ion-item> -->
+      <ion-item>
+        <ion-label>Price</ion-label>
+        <ion-input aria-label="price" type="number" [(ngModel)]="newLiquor.price" placeholder="Price"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Quantity</ion-label>
+        <ion-input aria-label="quantity" type="number" [(ngModel)]="newLiquor.quantity" placeholder="Quantity"></ion-input>
+      </ion-item>
+    </ion-card-content>
+    <ion-buttons class="add-item-buttons" *ngIf="isCameraAvailable">
+      <ion-button (click)="takePicture()" class="add-item-button">Take Picture</ion-button>
+      <ion-button (click)="addNewLiquor()" class="add-item-button">Add Item</ion-button>
+    </ion-buttons>
+    
+    <ion-buttons class="add-item-buttons" *ngIf="!isCameraAvailable">
+      <ion-button (click)="takePicture()" class="add-item-button">Access Webcam</ion-button>
+      <ion-button (click)="addNewLiquor()" class="add-item-button">Add Item</ion-button>
+    </ion-buttons>
+    
+  </ion-card>
+
+  <!-- Display the current inventory using *ngFor -->
+  <ion-list class="liquor-list">
+    <ion-card *ngFor="let item of liquorService.getLiquors()" class="liquor-item-card">
+      <ion-img [src]="item.imageUrl"></ion-img>
+      <ion-card-header>
+        <ion-card-title>{{ item.name }}</ion-card-title>
+        <ion-card-subtitle>{{ item.description }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row class="liquor-details-row">
+          <ion-col size="6">
+            <p class="price">Price: ${{ item.price }}</p>
+          </ion-col>
+          <ion-col size="6">
+            <p class="quantity">Quantity: {{ item.quantity }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

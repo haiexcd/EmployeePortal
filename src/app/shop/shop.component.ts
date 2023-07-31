@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Liquor } from '../shared/models/liquor.model';
 import { LiquorService } from '../shared/services/liquor.service';
 import { CartPanelService } from './cart-panel.service';
@@ -15,6 +16,7 @@ export class ShopComponent  implements OnInit {
   cart: Liquor[] = [];
   searchQuery: string = '';
   filteredLiquors: Liquor[] = [];
+  private liquorDataSubscription!: Subscription;
 
 
 
@@ -29,6 +31,18 @@ export class ShopComponent  implements OnInit {
     this.cartPanelService.getCart().subscribe((cart) => {
       this.cart = cart;
     });
+
+   // Subscribe to changes in the inventory data
+    this.liquorDataSubscription = this.liquorService.getLiquorsObservable().subscribe((liquors) => {
+      this.liquors = liquors;
+      this.filterLiquors();
+    });
+
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe from the observable to avoid memory leaks
+    this.liquorDataSubscription.unsubscribe();
   }
 
   getLiquors() {

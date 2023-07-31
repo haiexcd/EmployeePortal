@@ -39,6 +39,10 @@ const routes: Routes = [
     data: {
       roles: ['user'],
     }
+  },
+  {
+    path: 'inventory',
+    loadChildren: () => import('./inventory/inventory.module').then(m => m.InventoryModule),
   }
 ];
 

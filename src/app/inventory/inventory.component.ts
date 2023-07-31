@@ -22,6 +22,7 @@ export class InventoryComponent  implements OnInit {
 
   constructor(private camera: Camera, public liquorService: LiquorService) {
     this.isCameraAvailable = !!this.camera.getPicture; // Check if Camera plugin is available
+    console.log(this.isCameraAvailable)
   }
 
   ngOnInit() {}
@@ -48,9 +49,12 @@ export class InventoryComponent  implements OnInit {
     } else {
       // Using computer's webcam (localhost)
       const constraints = {
-        video: true,
+        video: {
+          facingMode: 'environment', // Use the rear camera (if available)
+          whiteBalanceMode: 'auto',  // Enable auto white balance
+          exposureMode: 'auto',      // Enable auto exposure
+        }
       };
-
       navigator.mediaDevices.getUserMedia(constraints).then(
         (stream) => {
           const video = document.createElement('video');

@@ -49,5 +49,21 @@ export const fakeLiquorData: Liquor[] = [
     imageUrl: 'https://images.unsplash.com/photo-1592369625625-0a33286bd55c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fGNyYWZ0JTIwYmVlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60',
     quantity: 0,
   },
+  {
+    id: 6,
+    name: 'Seltzer',
+    description: 'Premium Seltzer',
+    price: 15,
+    imageUrl: 'https://images.unsplash.com/photo-1592929135263-fb77e0f3927a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2VsdHplcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60',
+    quantity: 0,
+  },
+  {
+    id: 7,
+    name: 'NA Beer',
+    description: 'Premium NA Beer',
+    price: 10,
+    imageUrl: 'https://images.unsplash.com/photo-1618885472179-5e474019f2a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8TkElMjBiZWVyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60',
+    quantity: 0,
+  }
   // Add more fake liquor data here as needed
 ];

@@ -17,6 +17,10 @@
         <ion-label>Description</ion-label>
         <ion-input aria-label="description" [(ngModel)]="newLiquor.description" placeholder="Description"></ion-input>
       </ion-item>
+      <!-- <ion-item *ngIf="!isCameraAvailable">
+        <ion-label>Image URL</ion-label>
+        <ion-input [(ngModel)]="newLiquor.imageUrl" placeholder="Enter Image URL"></ion-input>
+      </ion-item> -->
       <ion-item>
         <ion-label>Price</ion-label>
         <ion-input aria-label="price" type="number" [(ngModel)]="newLiquor.price" placeholder="Price"></ion-input>
